@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ca"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Charge Check (mòbil)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1020;--panel:#151b34;--ink:#f1f3ff;--mut:#9aa3c7;--line:#3a4373;--chip:#1f2747;--accent:#ffd23f;--good:#2ecc71;--bad:#ff4d5e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef1fb;--panel:#fff;--ink:#12162b;--mut:#5b6280;--line:#b9c0e0;--chip:#e6e9f7}}
+:root[data-theme="light"]{--bg:#eef1fb;--panel:#fff;--ink:#12162b;--mut:#5b6280;--line:#b9c0e0;--chip:#e6e9f7}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:'Bricolage Grotesque',system-ui,sans-serif;background:radial-gradient(900px 480px at 85% -10%,rgba(80,100,255,.28),transparent 60%),var(--bg)}
+main{max-width:980px;margin:0 auto;padding:14px 12px 40px}
+h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.logo{display:inline-grid;place-items:center;width:38px;height:42px;border-radius:7px;background:var(--accent);color:#12162b;font-size:20px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.stats{display:flex;gap:16px;font-weight:700;color:var(--mut)}.stats b{color:var(--accent);font-size:20px;margin-left:4px}
+.tabs{display:flex;gap:8px;margin:14px 0 8px}
+.tabs button{flex:1;font:inherit;font-size:14px;font-weight:700;padding:10px 4px;border-radius:10px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.tabs button.on{background:var(--accent);color:#12162b;border-color:var(--accent)}
+.opts2{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--mut);margin-bottom:12px}
+.opts2 label{display:flex;gap:6px;align-items:center}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+.c-alk{--cc:#ff7b7b}.c-earth{--cc:#ffa94d}.c-tm{--cc:#ffd43b}.c-post{--cc:#74d680}.c-meta{--cc:#3fdcb0}.c-non{--cc:#5eb2f7}.c-hal{--cc:#b79cff}.c-noble{--cc:#aab2bd}
+.tile{position:relative;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:108px;height:124px;border-radius:12px;background:var(--cc);color:#12162b;flex:none}
+.tile i{position:absolute;top:7px;left:9px;font-style:normal;font-weight:700;font-size:15px}
+.tile b{font-size:52px;line-height:1;font-weight:800;letter-spacing:-.03em}.tile span{font-size:14px;font-weight:700;margin-top:4px}
+.qrow{display:flex;gap:16px;align-items:center}
+.qinfo p{margin:0 0 6px;color:var(--mut);font-size:15px}.qinfo p b{color:var(--ink)}
+.tag{display:inline-block;padding:2px 10px;border-radius:99px;background:var(--cc);color:#12162b;font-weight:800;font-size:13px}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;margin-top:14px}
+.chip{font:inherit;font-size:20px;font-weight:700;padding:12px 0;border-radius:12px;border:2px solid transparent;background:var(--chip);color:var(--ink);cursor:pointer}
+.chip.on{background:var(--ink);color:var(--bg)}.chip.good{background:var(--good);color:#06240f}.chip.bad{background:var(--bad);color:#fff}.chip.miss{border-color:var(--good);color:var(--good)}
+.go{display:block;width:100%;margin-top:14px;padding:13px;font:inherit;font-weight:800;font-size:17px;border:0;border-radius:12px;background:var(--accent);color:#12162b;cursor:pointer}
+.go:disabled{opacity:.4;cursor:default}
+.sm{font:inherit;font-weight:700;font-size:14px;padding:8px 14px;border-radius:10px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.msg{margin-top:12px;font-weight:700;font-size:16px}.msg.good{color:var(--good)}.msg.bad{color:var(--bad)}
+.tip{margin-top:6px;color:var(--mut);font-size:14px}
+.nums{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}.nums span{font-size:30px;font-weight:800;padding:6px 14px;border-radius:12px;background:var(--ink);color:var(--bg)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{font:inherit;cursor:pointer;padding:12px 8px;border-radius:14px;border:2px solid transparent;background:var(--chip);color:var(--ink);text-align:center}
+.opt b{display:block;font-size:30px;line-height:1.1}.opt small{opacity:.7;font-size:13px}
+.opt.good{background:var(--good);color:#06240f}.opt.bad{background:var(--bad);color:#fff}
+.bar{height:8px;border-radius:8px;background:var(--chip);margin:12px 0}.bar i{display:block;height:100%;border-radius:8px;background:var(--good);transition:width .3s}
+.gw{container-type:inline-size;margin-top:4px}
+.tbl{display:grid;grid-template-columns:1.2em repeat(18,1fr);gap:clamp(1px,.35cqw,4px);font-size:clamp(9px,2.3cqw,22px)}
+.lab{font-size:.55em;color:var(--mut);display:flex;align-items:center;justify-content:center}
+.cell{aspect-ratio:1/1.12;min-width:0;padding:0;border-radius:.3em;border:0;font:inherit;font-weight:800;line-height:1.1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#12162b}
+.cell small{font-size:.42em;font-weight:700;margin-top:.15em}
+.cell.full{background:var(--cc);cursor:pointer;animation:pop .35s}
+.cell.noble{background:transparent;border:1.5px solid var(--line);color:var(--mut)}
+.cell.slot{background:var(--chip);border:1.5px dashed var(--line);cursor:pointer}
+.cell.slot.t{background:color-mix(in srgb,var(--cc) 26%,transparent);border-color:color-mix(in srgb,var(--cc) 70%,transparent)}
+.cell.slot:hover{border-color:var(--accent)}
+.cell.bad{background:var(--bad)!important;animation:shake .3s}
+.cell.hint{animation:pulse .8s infinite;border:2px solid var(--accent)}
+@container (max-width:640px){.cell small{display:none}}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@keyframes pulse{50%{box-shadow:0 0 0 4px rgba(255,210,63,.5)}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:12px;font-size:13px;color:var(--mut)}
+.legend span:before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--cc);margin-right:5px;vertical-align:-1px}
+.info{margin-top:12px;padding:12px;border-radius:12px;background:var(--chip);font-size:15px}
+.weak{margin-top:12px;font-size:14px;color:var(--mut);min-height:18px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media (max-width:480px){.tile{width:88px;height:104px}.tile b{font-size:42px}}
+html,body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;padding:10px 8px calc(110px + env(safe-area-inset-bottom,0px))}
+h1{font-size:21px}.logo{width:32px;height:36px;font-size:17px}
+.stats{gap:12px;font-size:13px}.stats b{font-size:17px}
+.tabs button{font-size:14px;padding:11px 2px}
+.card{padding:12px}
+.tile{width:76px;height:92px}.tile b{font-size:38px}.tile span,.tile i{font-size:12px}
+.qrow{gap:12px}.qinfo p{font-size:13px;margin-bottom:4px}
+.tbl{grid-template-columns:1em repeat(15,1fr);gap:2px;font-size:max(11px,3.3cqw)}
+.lab{font-size:.85em}
+.cell{aspect-ratio:1/1.35;border-radius:5px}
+.cell.sel{outline:3px solid var(--accent);outline-offset:-1px;background:color-mix(in srgb,var(--accent) 45%,transparent)}
+.chips{grid-template-columns:repeat(4,1fr)}.chip{padding:16px 0;font-size:22px}
+.opt{padding:16px 6px}.sm{padding:10px 14px}
+.go{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;margin:0;padding:16px;z-index:5;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.note{font-size:12px;color:var(--mut);margin-top:8px}
+</style></head>
+<body><main id="app"></main>
+<script>
+const POS={H:[1,1],Li:[2,1],Be:[2,2],B:[2,13],C:[2,14],N:[2,15],O:[2,16],F:[2,17],Na:[3,1],Mg:[3,2],Al:[3,13],Si:[3,14],P:[3,15],S:[3,16],Cl:[3,17],K:[4,1],Ca:[4,2],Cr:[4,6],Mn:[4,7],Fe:[4,8],Co:[4,9],Ni:[4,10],Cu:[4,11],Zn:[4,12],As:[4,15],Br:[4,17],Rb:[5,1],Sr:[5,2],Pd:[5,10],Ag:[5,11],Cd:[5,12],Sn:[5,14],I:[5,17],Cs:[6,1],Ba:[6,2],Pt:[6,10],Au:[6,11],Hg:[6,12],Pb:[6,14]};
+const NOBLE={He:[1,18],Ne:[2,18],Ar:[3,18],Kr:[4,18],Xe:[5,18]};
+const CAT={alk:["Metall alcalí","El grup 1 sempre perd un electró, així que sempre és +1."],earth:["Metall alcalinoterri","El grup 2 sempre perd dos electrons, així que sempre és +2."],tm:["Metall de transició","Poden perdre un nombre diferent d'electrons, per això tenen diversos nombres."],post:["Metall de post-transició","L'Al sempre és +3. L'Sn i el Pb poden ser +2 o +4."],meta:["Metaloide","Mig metall, mig no metall, així que poden ser positius o negatius."],non:["No metall","Negatius quan guanyen electrons (l'O és -2, el N és -3), positius quan s'uneixen a un àtom que atreu més fort."],hal:["Halogen","Els falta un electró per tenir l'última capa plena, així que normalment són -1. El Cl, el Br i l'I són positius al costat de l'oxigen. El F sempre és -1."]};
+const cat=s=>['Li','Na','K','Rb','Cs'].includes(s)?'alk':['Be','Mg','Ca','Sr','Ba'].includes(s)?'earth':POS[s][1]>=6&&POS[s][1]<=12?'tm':['Al','Sn','Pb'].includes(s)?'post':['B','Si','As'].includes(s)?'meta':['F','Cl','Br','I'].includes(s)?'hal':'non';
+const D=[["H","Hidrogen",1,[1,-1]],["Li","Liti",3,[1]],["Be","Beril·li",4,[2]],["B","Bor",5,[3,-3]],["C","Carboni",6,[4,-4]],["N","Nitrogen",7,[3,5,-3]],["O","Oxigen",8,[-2]],["F","Fluor",9,[-1]],["Na","Sodi",11,[1]],["Mg","Magnesi",12,[2]],["Al","Alumini",13,[3]],["Si","Silici",14,[4,-4]],["P","Fòsfor",15,[3,5,-3]],["S","Sofre",16,[2,4,6,-2]],["Cl","Clor",17,[1,3,5,7,-1]],["K","Potassi",19,[1]],["Ca","Calci",20,[2]],["Cr","Crom",24,[2,3,4,6]],["Mn","Manganès",25,[2,3,4,6,7]],["Fe","Ferro",26,[2,3]],["Co","Cobalt",27,[2,3]],["Ni","Níquel",28,[2,3]],["Cu","Coure",29,[1,2]],["Zn","Zinc",30,[2]],["As","Arsènic",33,[3,5,-3]],["Br","Brom",35,[1,3,5,7,-1]],["Rb","Rubidi",37,[1]],["Sr","Estronci",38,[2]],["Pd","Pal·ladi",46,[2,4]],["Ag","Plata",47,[1]],["Cd","Cadmi",48,[2]],["Sn","Estany",50,[2,4]],["I","Iode",53,[1,3,5,7,-1]],["Cs","Cesi",55,[1]],["Ba","Bari",56,[2]],["Pt","Platí",78,[2,4]],["Au","Or",79,[1,3]],["Hg","Mercuri",80,[1,2]],["Pb","Plom",82,[2,4]]].map(([s,nm,z,n])=>({s,nm,z,n,p:POS[s],c:cat(s)}));
+const ALL=[-4,-3,-2,-1,1,2,3,4,5,6,7];
+const f=n=>n>0?'+'+n:''+n;const buzz=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}};const dc=g=>g<=2?g:g-3;const GR=[1,2,6,7,8,9,10,11,12,13,14,15,16,17,18];
+const key=a=>[...a].sort((x,y)=>x-y).join();
+const L=a=>[...a].sort((x,y)=>x-y).map(f).join(', ');
+const sh=a=>a.slice().sort(()=>Math.random()-.5);
+const tile=e=>`<div class="tile c-${e.c}"><i>${e.z}</i><b>${e.s}</b><span>${e.nm}</span></div>`;
+let S={mode:'c',easy:false,tint:true,score:0,streak:0,best:0,miss:{},placed:{},q:null,done:false,sel:new Set(),last:'',chosen:'',ok:false,flash:'',hint:false,info:''};
+try{S.best=+localStorage.getItem('cc_best')||0}catch(e){}
+function win(){buzz(25);if(S.streak>S.best){S.best=S.streak;try{localStorage.setItem('cc_best',S.best)}catch(e){}}}
+function pick(){
+  const p=D.filter(e=>(!S.easy||e.n.length==1)&&e.s!==S.last&&!(S.mode=='c'&&S.placed[e.s]));
+  const w=p.map(e=>1+2*(S.miss[e.s]||0));
+  let r=Math.random()*w.reduce((a,b)=>a+b,0),i=0;
+  for(;i<p.length-1;i++){r-=w[i];if(r<0)break}
+  return p[i];
+}
+function newQ(){
+  if(S.mode=='c')S.last='';
+  const e=pick();S.flash='';S.pick='';S.hint=false;S.done=false;S.sel=new Set();S.chosen='';
+  if(!e){S.q=null;render();return}
+  S.last=e.s;const q={e};
+  if(S.mode=='b'){const k=key(e.n);q.opts=sh([e,...sh(D.filter(x=>key(x.n)!==k)).slice(0,3)])}
+  S.q=q;render();
+}
+function grade(ok){
+  S.done=true;S.ok=ok;const s=S.q.e.s;
+  if(ok){S.score++;S.streak++;win();if(S.miss[s])S.miss[s]--}else{S.streak=0;S.miss[s]=(S.miss[s]||0)+1;buzz([50,40,50])}
+  render();
+}
+function after(e){return `<div class="msg ${S.ok?'good':'bad'}">${S.ok?'Correcte. ':''}${e.s} (${e.nm}): ${L(e.n)}</div><p class="tip"><span class="tag c-${e.c}">${CAT[e.c][0]}</span> ${CAT[e.c][1]}</p><button class="go" data-act="next">Següent</button>`}
+function cBody(e){
+  const n=D.length,done=Object.keys(S.placed).length;
+  let c='';
+  for(const g of GR)c+=`<div class="lab" style="grid-row:1;grid-column:${dc(g)+1}">${g}</div>`;
+  for(let r=1;r<=6;r++)c+=`<div class="lab" style="grid-row:${r+1};grid-column:1">${r}</div>`;
+  for(const s in NOBLE){const p=NOBLE[s];c+=`<div class="cell noble" style="grid-row:${p[0]+1};grid-column:${dc(p[1])+1}">${s}</div>`}
+  for(const el of D){
+    const st=`style="grid-row:${el.p[0]+1};grid-column:${dc(el.p[1])+1}"`;
+    if(S.placed[el.s])c+=`<button class="cell full c-${el.c}" ${st} data-act="info" data-v="${el.s}">${el.s}<small>${el.n.slice().sort((a,b)=>a-b).map(f).join(' ')}</small></button>`;
+    else c+=`<button class="cell slot c-${el.c} ${S.tint?'t':''} ${S.flash==el.s?'bad':''} ${S.hint&&e&&e.s==el.s?'hint':''} ${S.pick==el.s?'sel':''}" ${st} data-act="slot" data-v="${el.s}" aria-label="Grup ${el.p[1]}, període ${el.p[0]}"></button>`;
+  }
+  const leg=Object.keys(CAT).map(k=>`<span class="c-${k}">${CAT[k][0]}</span>`).join('');
+  const inf=S.info?(x=>`<div class="info"><b>${x.nm} (${x.s}), nombre atòmic ${x.z}.</b> Grup ${x.p[1]}, període ${x.p[0]}. Nombres d'oxidació: ${L(x.n)}.<br>${CAT[x.c][1]}</div>`)(D.find(d=>d.s==S.info)):'';
+  let head;
+  if(!e)head=done==n?`<div class="msg good">Taula completa! Els ${n} elements són al seu lloc.</div><button class="go" data-act="reset">Torna a començar</button>`:`<div class="msg">No queda res amb aquest filtre. Desmarca la casella per continuar.</div>`;
+  else head=`<div class="qrow">${tile(e)}<div class="qinfo"><p>Nombres d'oxidació: <b>${L(e.n)}</b></p><p><span class="tag c-${e.c}">${CAT[e.c][0]}</span></p><p>${CAT[e.c][1]}</p><button class="sm" data-act="hint">Mostra'm on</button></div></div>${S.flash?`<div class="msg bad">${S.dir}</div>`:''}`;
+  return `${head}<div class="bar"><i style="width:${done/n*100}%"></i></div><div class="gw"><div class="tbl">${c}</div></div><div class="legend">${leg}</div><p class="note">Falten els grups 3, 4 i 5 perquè no surten al teu quadre.</p>${inf}${S.pick?(x=>`<button class="go" data-act="place">Col·loca aquí (grup ${x.p[1]}, període ${x.p[0]})</button>`)(D.find(d=>d.s==S.pick)):''}`;
+}
+function render(){
+  const e=S.q?S.q.e:null;let body='';
+  if(S.mode=='a'){
+    const chips=ALL.map(n=>{let c='';
+      if(S.done){const g=e.n.includes(n),s=S.sel.has(n);c=g&&s?'good':s?'bad':g?'miss':''}else if(S.sel.has(n))c='on';
+      return `<button class="chip ${c}" data-act="tog" data-v="${n}" ${S.done?'disabled':''}>${f(n)}</button>`}).join('');
+    body=`<div class="qrow">${tile(e)}<div class="qinfo"><p>Toca tots els nombres d'oxidació que pot tenir <b>${e.nm}</b>.</p></div></div><div class="chips">${chips}</div>
+    ${S.done?after(e):`<button class="go" data-act="check" ${S.sel.size?'':'disabled'}>Comprova</button>`}`;
+  }else if(S.mode=='b'){
+    const o=S.q.opts.map(o=>{let c='';if(S.done)c=o.s==e.s?'good':o.s==S.chosen?'bad':'';
+      return `<button class="opt ${c}" data-act="opt" data-v="${o.s}" ${S.done?'disabled':''}><b>${o.s}</b><small>${o.nm}</small></button>`}).join('');
+    body=`<p class="tip" style="margin:0">Quin element té exactament aquests nombres d'oxidació?</p><div class="nums">${[...e.n].sort((a,b)=>a-b).map(n=>`<span>${f(n)}</span>`).join('')}</div><div class="opts">${o}</div>${S.done?after(e):''}`;
+  }else body=cBody(e);
+  const weak=Object.keys(S.miss).filter(k=>S.miss[k]>0);
+  document.getElementById('app').innerHTML=`
+  <div class="top"><h1><span class="logo">Cc</span>Charge Check</h1><div class="stats"><span>Punts<b>${S.score}</b></span><span>Ratxa<b>${S.streak}</b></span><span>Rècord<b>${S.best}</b></span></div></div>
+  <div class="tabs">${[['c','Taula'],['a','Nombres'],['b','Element']].map(t=>`<button data-act="mode" data-v="${t[0]}" class="${S.mode==t[0]?'on':''}">${t[1]}</button>`).join('')}</div>
+  <div class="opts2"><label><input type="checkbox" data-act="easy" ${S.easy?'checked':''}> Només elements amb un sol nombre</label>${S.mode=='c'?`<label><input type="checkbox" data-act="tint" ${S.tint?'checked':''}> Pistes de color als quadres buits</label>`:''}</div>
+  <div class="card">${body}</div><div class="weak">${weak.length?'A repassar: '+weak.join(', '):''}</div>`;
+}
+document.addEventListener('click',ev=>{
+  const b=ev.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act,v=b.dataset.v;
+  if(a=='tog'&&!S.done){const n=+v;S.sel.has(n)?S.sel.delete(n):S.sel.add(n);render()}
+  else if(a=='check'&&!S.done&&S.sel.size)grade(key(S.sel)==key(S.q.e.n));
+  else if(a=='opt'&&!S.done){S.chosen=v;grade(v==S.q.e.s)}
+  else if(a=='slot'&&S.q){S.pick=v;S.flash='';render()}
+  else if(a=='place'&&S.q&&S.pick){
+    const v=S.pick;S.pick='';const e=S.q.e;
+    if(v==e.s){if(!S.q.bad){S.score++;S.streak++;win();if(S.miss[e.s])S.miss[e.s]--}S.placed[e.s]=1;S.info=e.s;newQ()}
+    else{
+      if(!S.q.bad){S.q.bad=1;S.streak=0;S.miss[e.s]=(S.miss[e.s]||0)+1}
+      const p=D.find(d=>d.s==v).p,t=e.p,dx=p[1]-t[1],dy=p[0]-t[0];
+      const h=dx>0?"més a l'esquerra":dx<0?'més a la dreta':'',vv=dy>0?'més amunt':dy<0?'més avall':'';
+      S.dir='No és aquí. Mira '+[h,vv].filter(Boolean).join(' i ')+'.';S.flash=v;buzz([50,40,50]);render();
+    }
+  }
+  else if(a=='hint'&&S.q){if(!S.q.bad){S.q.bad=1;S.streak=0}S.hint=true;render()}
+  else if(a=='info'){S.info=v;render()}
+  else if(a=='reset'){S.placed={};S.info='';newQ()}
+  else if(a=='next')newQ();
+  else if(a=='mode'){S.mode=v;newQ()}
+  else if(a=='easy'){S.easy=b.checked;newQ()}
+  else if(a=='tint'){S.tint=b.checked;render()}
+});
+document.addEventListener('keydown',ev=>{
+  if(ev.key!=='Enter'||ev.target.closest('button,input'))return;
+  if(S.done)newQ();else if(S.mode=='a'&&S.sel.size)grade(key(S.sel)==key(S.q.e.n));
+});
+newQ();
+</script></body></html>
